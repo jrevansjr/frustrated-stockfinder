@@ -73,12 +73,16 @@ class Stockfinder:
         else:
             print("SELECTOR ERROR")
             return "ERROR"
-        hits = 0
+        # occasionally website will return an error when called, resolved by next loop
+	if results.getText() is None:
+            print("SOUP ERROR WILL RESOLVE NEXT CALL")
+            return "ERROR"
         # some websites are not consistant and may utilize a variety of tags in their product header to indicate stock (eg. pick up, in stock, add to cart). Option to search for various targets
         if type(target) == str:
             target = [target]
         # loops throughh all potential targets to find a hit
-        for i in target:
+        hits = 0
+	for i in target:
             hits = hits + int(i in results.getText())
         if hits > 0:
             return "IN STOCK"
